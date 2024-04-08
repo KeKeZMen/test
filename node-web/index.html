@@ -1,0 +1,40 @@
+<html lang="en">
+  <head>
+    <title>Node Form</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      .wrapper {
+        height: 100dvh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+      }
+
+      .form {
+        width: 300px;
+        display: flex;
+        justify-content: space-between;
+        flex-direction: column;
+        gap: 15px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="wrapper">
+      <a href="/private">Private</a>
+      <form class="form" method="post">
+        <h1>Form</h1>
+        <input type="text" name="name" required />
+        <input type="password" name="password" required />
+        <button type="submit">Send</button>
+      </form>
+    </div>
+  </body>
+</html>
