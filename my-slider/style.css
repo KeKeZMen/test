@@ -1,0 +1,119 @@
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    font-family: sans-serif;
+}
+
+body {
+    background: #212121;
+    color: white;
+}
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100%;
+}
+
+.slider-container {
+    position: relative;
+    overflow: hidden;
+    width: 340px;
+    padding: 20px 0;
+}
+
+.slider-track {
+    transition: 0.3s ease;
+    transition-timing-function: ease-in-out;
+    width: max-content;
+    display: flex;
+    flex-direction: row;
+    transform: translateX(0px);
+}
+
+.slider-item {
+    font-size: 40px;
+    width: 300px;
+    height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    margin: 0 20px;
+    box-shadow: 0 0 10px white;
+}
+
+.slider-dots{
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+}
+
+.slider-dots span{
+    cursor: pointer;
+    transition: .1s;
+    opacity: 0.5;
+    width: 7px;
+    padding: 7px;
+    border-radius: 50%;
+    background: white;
+    margin: 0 5px;
+    box-shadow: 0 0 10px white;
+}
+
+.slider-dots span:hover{
+    transform: scale(1.2);
+}
+
+.slider-dots span:active{
+    transition: .05s;
+    transform: scale(.8);
+}
+
+.active{
+    opacity: 1 !important;
+}
+
+.slider-btns {
+    width: 50px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.slider-btn {
+    transition: 0.2s;
+    cursor: pointer;
+    box-shadow: 0 0 10px white;
+    border-radius: 5px;
+    width: 20px;
+    height: 20px;
+    border: none;
+    background: white url("https://www.pngmart.com/files/15/Arrow-PNG-Clipart.png") no-repeat center;
+    background-size: 70% 70%;
+}
+.slider-btn:first-child {
+    transform: rotate(180deg);
+}
+
+.slider-btn:hover {
+    transform: scale(1.1);
+}
+
+.slider-btn:active {
+    transition: 0.05s;
+    transform: scale(0.90);
+}
+
+.slider-btn:first-child:hover {
+    transform: rotate(180deg) scale(1.1);
+}
+
+.slider-btn:first-child:active {
+    transform: rotate(180deg) scale(0.90);
+}

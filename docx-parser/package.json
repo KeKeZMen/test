@@ -1,0 +1,16 @@
+{
+  "type": "module",
+  "name": "docx-parser",
+  "version": "1.0.0",
+  "description": "",
+  "main": "parser.js",
+  "scripts": {
+    "start": "node src/parser.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ruslat": "^1.0.0"
+  }
+}

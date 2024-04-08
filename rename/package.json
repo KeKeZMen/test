@@ -1,0 +1,16 @@
+{
+  "type": "module",
+  "name": "rename",
+  "version": "1.0.0",
+  "description": "",
+  "main": "rename.js",
+  "scripts": {
+    "start": "node src/rename.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "image-size": "^1.0.2"
+  }
+}
