@@ -1,0 +1,58 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int     @id @default(autoincrement())
+  email     String  @unique
+  password  String
+  banned    Boolean @default(false)
+  banReason String?
+
+  roleToUser RoleToUser[]
+  posts      Post[]
+
+  @@index([id])
+  @@map("users")
+}
+
+model RoleToUser {
+  id     Int @id @default(autoincrement())
+  userId Int
+  roleId Int
+
+  user User @relation(fields: [userId], references: [id])
+  role Role @relation(fields: [roleId], references: [id])
+
+  @@index([id])
+  @@map("role_to_user")
+}
+
+model Role {
+  id          Int    @id @default(autoincrement())
+  value       String
+  description String
+
+  roleToUser RoleToUser[]
+
+  @@index([id])
+  @@map("roles")
+}
+
+model Post {
+  id      Int    @id @default(autoincrement())
+  title   String
+  content String
+  image   String
+  userId  Int
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@index([id])
+  @@map("posts")
+}
