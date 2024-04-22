@@ -1,5 +1,5 @@
 import { createRoot } from "react-dom/client";
-import { App } from "@/app/components/App";
+import { App } from "@/app/components/app";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { About } from "@/app/pages/about";
 import { Shop } from "@/app/pages/shop";

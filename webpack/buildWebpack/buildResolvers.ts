@@ -1,5 +1,5 @@
 import { Configuration } from "webpack";
-import { IBuildOptions } from "./types/types";
+import { IBuildOptions } from "./types";
 
 export default function buildResolvers(
   options: IBuildOptions

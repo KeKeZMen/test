@@ -1,20 +1,26 @@
 import webpack from "webpack";
-import buildWebpack from "./config/build/buildWebpack";
-import { BuildModeType, IBuildPaths } from "./config/build/types/types";
+import buildWebpack from "./buildWebpack";
+import {
+  BuildModeType,
+  BuildPlatformType,
+  IBuildPaths,
+} from "./buildWebpack/types";
 import path from "path";
 
 interface IEnvVariables {
-  mode: BuildModeType;
-  port: number;
-  analyzer: boolean;
+  mode?: BuildModeType;
+  port?: number;
+  analyzer?: boolean;
+  platform?: BuildPlatformType;
 }
 
 export default (env: IEnvVariables) => {
   const paths: IBuildPaths = {
     output: path.resolve(__dirname, "build"),
     entry: path.resolve(__dirname, "src", "app", "index.tsx"),
-    html: path.resolve(__dirname, "src", "index.html"),
+    html: path.resolve(__dirname, "public", "index.html"),
     src: path.resolve(__dirname, "src"),
+    public: path.resolve(__dirname, "public")
   };
 
   const config: webpack.Configuration = buildWebpack({
@@ -22,6 +28,7 @@ export default (env: IEnvVariables) => {
     mode: env.mode ?? "development",
     paths,
     analyzer: env.analyzer,
+    platform: env.platform ?? "desktop",
   });
 
   return config;

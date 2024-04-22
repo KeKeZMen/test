@@ -3,7 +3,7 @@ import buildDevServer from "./buildDevServer";
 import buildPlugins from "./buildPlugins";
 import buildLoaders from "./buildLoaders";
 import buildResolvers from "./buildResolvers";
-import { IBuildOptions } from "./types/types";
+import { IBuildOptions } from "./types";
 
 export default function buildWebpack(
   options: IBuildOptions
@@ -24,7 +24,7 @@ export default function buildWebpack(
       rules: buildLoaders(options),
     },
     resolve: buildResolvers(options),
-    devtool: isDev && "inline-source-map",
+    devtool: isDev ? "eval-cheap-module-source-map" : "source-map",
     devServer: isDev && buildDevServer(options),
   };
 }
