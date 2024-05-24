@@ -3,6 +3,8 @@ import { UserModule } from "./user/user.module";
 import { PrismaModule } from "./prisma/prisma.module";
 import { AuthModule } from "./auth/auth.module";
 import { ConfigModule } from "@nestjs/config";
+import { JwtGuard } from "@auth/guards/jwt.guard";
+import { APP_GUARD } from "@nestjs/core";
 
 @Module({
   imports: [
@@ -13,6 +15,12 @@ import { ConfigModule } from "@nestjs/config";
       envFilePath: ".env",
       isGlobal: true,
     }),
+  ],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: JwtGuard,
+    },
   ],
 })
 export class AppModule {}

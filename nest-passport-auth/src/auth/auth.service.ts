@@ -10,7 +10,6 @@ import { Tokens } from "./interfaces";
 import { compareSync } from "bcrypt";
 import { Token, User } from "@prisma/client";
 import { JwtService } from "@nestjs/jwt";
-import {} from "node:crypto";
 import { PrismaService } from "@prisma/prisma.service";
 
 @Injectable()
@@ -40,9 +39,9 @@ export class AuthService {
     });
   }
 
-  async login(loginDto: LoginDto): Promise<Tokens> {
+  async login(loginDto: LoginDto, userAgent: string): Promise<Tokens> {
     const user: User = await this.userService
-      .findOneByIdOrEmail(loginDto.email)
+      .findOneByIdOrEmail(loginDto.email, true)
       .catch((err) => {
         this.logger.error(err);
         return null;
@@ -52,6 +51,43 @@ export class AuthService {
       throw new UnauthorizedException("Неверный логин или пароль");
     }
 
+    return this.generateTokens(user, userAgent);
+  }
+
+  async refreshTokens(refreshToken: string, userAgent: string) {
+    const token = await this.prisma.token.findUnique({
+      where: {
+        token: refreshToken,
+      },
+    });
+
+    if (!token) {
+      throw new UnauthorizedException();
+    }
+
+    await this.prisma.token.delete({
+      where: {
+        token: refreshToken,
+      },
+    });
+
+    if (new Date(token.exp) < new Date()) {
+      throw new UnauthorizedException();
+    }
+
+    const user = await this.userService.findOneByIdOrEmail(token.userId, true);
+    return this.generateTokens(user, userAgent);
+  }
+
+  async deleteRefreshToken(token: string) {
+    return await this.prisma.token.delete({
+      where: {
+        token,
+      },
+    });
+  }
+
+  private async generateTokens(user: User, userAgent: string) {
     const accessToken =
       "Bearer " +
       this.jwtService.sign({
@@ -60,7 +96,7 @@ export class AuthService {
         roles: user.roles,
       });
 
-    const refreshToken = await this.getRefreshToken(user.id);
+    const refreshToken = await this.getRefreshToken(user.id, userAgent);
 
     return {
       accessToken,
@@ -68,12 +104,32 @@ export class AuthService {
     };
   }
 
-  private async getRefreshToken(userId: string): Promise<Token> {
-    return await this.prisma.token.create({
-      data: {
+  private async getRefreshToken(
+    userId: string,
+    userAgent: string
+  ): Promise<Token> {
+    const _token = await this.prisma.token.findFirst({
+      where: {
+        userId,
+        userAgent,
+      },
+    });
+
+    const token = _token?.token ?? "";
+
+    return await this.prisma.token.upsert({
+      where: {
+        token,
+      },
+      update: {
+        exp: new Date(new Date().getTime() + 6 * 24 * 60 * 60 * 1000),
+        token: crypto.randomUUID(),
+      },
+      create: {
         userId,
         exp: new Date(new Date().getTime() + 6 * 24 * 60 * 60 * 1000),
         token: crypto.randomUUID(),
+        userAgent,
       },
     });
   }
